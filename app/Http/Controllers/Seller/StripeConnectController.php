@@ -4,16 +4,19 @@ namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use App\Services\Stripe\ConnectService;
+use App\Services\Stripe\CustomerService;
 use Illuminate\Http\Request;
 use App\Models\User;
 
 class StripeConnectController extends Controller
 {
     protected $connectService;
+    protected $customerService;
 
-    public function __construct(ConnectService $connectService)
+    public function __construct(ConnectService $connectService, CustomerService $customerService)
     {
         $this->connectService = $connectService;
+        $this->customerService = $customerService;
     }
 
     public function dashboard(Request $request)
@@ -25,6 +28,9 @@ class StripeConnectController extends Controller
         if ($user->stripe_account_id) {
             $accountStatus = $this->connectService->checkAccountStatus($user);
         }
+
+        // $customer = $this->customerService->create($user);
+        // dd($customer);
 
         return view('seller.dashboard', compact('user', 'accountStatus'));
     }

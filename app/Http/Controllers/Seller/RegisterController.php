@@ -4,18 +4,20 @@ namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use App\Models\Seller;
+use App\Services\Stripe\CustomerService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
+
     public function showRegistrationForm()
     {
         return view('seller.auth.register');
     }
 
-    public function register(Request $request)
+    public function register(Request $request,CustomerService $customerService)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -28,6 +30,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        $customerService->create($seller);
 
         Auth::guard('seller')->login($seller);
 

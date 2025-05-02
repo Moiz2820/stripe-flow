@@ -51,6 +51,7 @@
                 <a href="{{ route('seller.stripe.onboarding.start') }}" class="btn btn-success">Complete Onboarding</a>
                 <a href="{{ route('seller.stripe.onboarding.refresh') }}" class="btn btn-warning">Refresh Onboarding Link</a>
                 <a href="{{ route('seller.stripe.details') }}" class="btn btn-info">View Account Details</a>
+                <a href="{{ route('seller.cust.index') }}" class="btn btn-info">View As a Customer</a>
 
                 <form action="{{ route('seller.stripe.disconnect') }}" method="POST" class="mt-2">
                     @csrf
@@ -60,4 +61,5 @@
             @endif
         </div>
     </div>
+
 @endsection

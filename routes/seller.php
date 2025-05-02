@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Seller\CustomerController;
 use App\Http\Controllers\Seller\LoginController;
 use App\Http\Controllers\Seller\RegisterController;
 use App\Http\Controllers\Seller\StripeConnectController;
+use App\Http\Controllers\Seller\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -28,6 +30,17 @@ Route::prefix('seller')->name('seller.')->group(function () {
         Route::get('/stripe/account/details', [StripeConnectController::class, 'accountDetails'])->name('stripe.details');
         Route::post('/stripe/account/disconnect', [StripeConnectController::class, 'disconnectAccount'])->name('stripe.disconnect');
 
-        Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+        Route::controller(SubscriptionController::class)->prefix('/sub')->name('sub.')->group(function () {
+            Route::get('/create','create')->name('create');
+            Route::get('/cancel','cancel')->name('cancel');
+
+            Route::post('/cancelSubscription','cancelSubscription')->name('cancel.stripe');
+            Route::get('/success','success')->name('success');
+
+        });
+        Route::controller(CustomerController::class)->prefix('/cust')->name('cust.')->group(function () {
+            Route::get('/index','index')->name('index');
+        });
+            Route::get('logout', [LoginController::class, 'logout'])->name('logout');
     });
 });
